@@ -1,0 +1,278 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crick.AI - Match Companion</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'companion/css/style.css' %}">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="app-header">
+        <div class="nav-brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-bolt-lightning"></i>
+            </div>
+            <div class="brand-title">
+                <h1>Crick.<span>AI</span></h1>
+                <!-- <span class="demo-badge"><i class="fa-solid fa-circle"></i> DEMO</span> -->
+            </div>
+        </div>
+
+        <nav class="nav-links">
+            <button class="nav-tab active" data-target="live-stream-section">
+                <i class="fa-solid fa-tv"></i> Live
+            </button>
+            <button class="nav-tab" data-target="overs-section">
+                <i class="fa-solid fa-chart-line"></i> Overs &amp; Stats
+            </button>
+            <button class="nav-tab" data-target="moments-section">
+                <i class="fa-solid fa-fire"></i> Key Moments
+            </button>
+            <button class="nav-tab ai-tab" data-target="ask-ai-section">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI
+            </button>
+        </nav>
+
+        <div class="nav-actions">
+            <div class="match-status-pill">
+                <span class="pulse-dot"></span>
+                <span>MI v RPS • IPL Final 2017</span>
+            </div>
+            <!-- <button class="theme-toggle" id="themeToggleBtn" title="Toggle Sound / Ambient Glow">
+                <i class="fa-solid fa-volume-high"></i> -->
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+
+        <!-- Match Score Header -->
+        <section class="match-header-card">
+            <div class="team team-home">
+                <div class="team-badge mi">MI</div>
+                <div class="team-info">
+                    <h2>Mumbai Indians</h2>
+                    <p class="team-score">
+                        <span id="indScore">0/0</span>
+                        <span class="overs-count" id="indOvers">(0.0 Ov)</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="match-vs-center">
+                <span class="vs-badge">VS</span>
+                <div class="win-probability-bar">
+                    <div class="prob-mi" style="width: 50%;" id="probMi">MI 50%</div>
+                    <div class="prob-rps" style="width: 50%;" id="probRps">RPS 50%</div>
+                </div>
+            </div>
+
+            <div class="team team-away">
+                <div class="team-info text-right">
+                    <h2>Rising Pune Supergiant</h2>
+                    <p class="team-score">
+                        <span id="rpsScore">0/0</span>
+                        <span class="overs-count" id="rpsOvers">(0.0 Ov)</span>
+                    </p>
+                </div>
+                <div class="team-badge rps">RPS</div>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <div class="dashboard-grid">
+
+            <!-- Left Column -->
+            <div class="left-column">
+
+                <!-- Match Video -->
+                <section class="glass-card video-card" id="live-stream-section">
+                    <div class="video-top-header">
+                        <div class="video-badges">
+                            <span class="live-stream-badge">
+                                <i class="fa-solid fa-circle"></i> RECORDED MATCH
+                            </span>
+                            <span class="stream-quality">1080p</span>
+                        </div>
+                        <div class="sync-toggle-wrapper"></div>
+                    </div>
+
+                    <div class="video-wrapper">
+                        <div id="matchVideo"></div>
+                    </div>
+                </section>
+
+                <!-- Current Over and Stats -->
+                <section class="glass-card stats-card" id="overs-section">
+                    <div class="card-header-flex">
+                        <h3>
+                            <i class="fa-solid fa-baseball text-cyan"></i>
+                            Current Over <span id="currentOverNum">(1st)</span>
+                        </h3>
+                        <span class="over-summary-total">
+                            Over Runs: <strong id="overRuns">0</strong>
+                        </span>
+                    </div>
+
+                                        <div class="stats-tables-grid">
+                        <div class="table-box">
+                            <h4>Batting</h4>
+                            <div class="player-row active-player">
+                                <span class="p-name" id="batter1Name">Lendl Simmons*</span>
+                                <span class="p-stats" id="batter1Stats">0 (0)</span>
+                                <span class="p-sr" id="batter1SR">SR: 0.0</span>
+                            </div>
+                            <div class="player-row">
+                                <span class="p-name" id="batter2Name">Parthiv Patel</span>
+                                <span class="p-stats" id="batter2Stats">0 (0)</span>
+                                <span class="p-sr" id="batter2SR">SR: 0.0</span>
+                            </div>
+                        </div>
+
+                        <div class="table-box">
+                            <h4>Bowling</h4>
+                            <div class="player-row active-player">
+                                <span class="p-name" id="bowlerName">Jaydev Unadkat</span>
+                                <span class="p-stats" id="bowlerStats">0.0 - 0 - 0 - 0</span>
+                                <span class="p-econ" id="bowlerEcon">ECON: 0.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Key Moments -->
+                <section class="glass-card moments-card" id="moments-section">
+                    <h3>
+                        <i class="fa-solid fa-timeline text-cyan"></i>
+                        Key Match Moments
+                    </h3>
+                    <div class="moments-timeline" id="momentsTimeline">
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; padding: 1rem;">
+                            No major events yet...
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+
+                <!-- AI Insights -->
+                <section class="glass-card ai-insights-card">
+                    <div class="card-header-flex">
+                        <h3>
+                            <i class="fa-solid fa-brain text-cyan"></i>
+                            AI Match Insights
+                        </h3>
+                        <span class="ai-live-badge">
+                            <i class="fa-solid fa-microchip"></i> Data Driven
+                        </span>
+                    </div>
+
+                    <div class="insight-ticker-box">
+                        <div class="insight-pill">
+                            <i class="fa-solid fa-bolt text-yellow"></i>
+                            <p id="insightText1">
+                                <strong>Powerplay:</strong> MI openers look to assess the pitch.
+                            </p>
+                        </div>
+                        <div class="insight-pill">
+                            <i class="fa-solid fa-bullseye text-cyan"></i>
+                            <p id="insightText2">
+                                <strong>Tactics:</strong> RPS pacers will target the stumps early on.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Smart Recap + Chatbot: ONE CARD -->
+                <section class="glass-card ask-ai-card" id="ask-ai-section">
+
+                    <div class="card-header-flex">
+                        <h3>
+                            <i class="fa-solid fa-robot text-cyan"></i>
+                            Crick AI Companion
+                        </h3>
+                        <span class="ai-model-tag">AI Assistant</span>
+                    </div>
+
+                    <!-- Smart Match Recap -->
+                    <div class="recap-section">
+                        <div class="recap-heading">
+                            <h4><i class="fa-solid fa-wand-magic-sparkles text-cyan"></i> Smart Match Recap</h4>
+                            <span class="recap-subtitle">Catch up on the match</span>
+                        </div>
+
+                        <div class="suggested-queries recap-controls">
+                            <button type="button" class="suggestion-chip recap-btn" data-overs="5">
+                                5 Over Recap
+                            </button>
+                            <button type="button" class="suggestion-chip recap-btn" data-overs="10">
+                                10 Over Recap
+                            </button>
+                            <button type="button" class="suggestion-chip recap-btn" data-overs="15">
+                                15 Over Recap
+                            </button>
+                            <button type="button" class="suggestion-chip recap-btn" data-overs="20">
+                                Full Match Recap
+                            </button>
+                        </div>
+
+                        <!-- Recap output stays inside the AI card -->
+                        
+                    </div>
+
+                    <!-- <div class="ai-section-divider">
+                        <span>ASK CRICK AI</span>
+                    </div> -->
+
+                    <!-- Chatbot Conversation -->
+                    <div class="chat-messages-container" id="chatMessages">
+                        <div class="chat-message ai-msg">
+                            <div class="msg-avatar">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="msg-content">
+                                <p>Hello! I am your AI  Companion. Ask me anything about cricket!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-wrapper">
+                        <input
+                            type="text"
+                            id="chatInput"
+                            placeholder="Ask AI about stats, tactics, match analysis..."
+                            autocomplete="off"
+                        >
+                        <button type="button" id="chatSendBtn" class="send-btn" aria-label="Send message">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Crick AI Companion &copy; 2026 • Missed the match? Never miss the context.</p>
+    </footer>
+
+    <!-- Scripts: preserve loading order -->
+    <script src="{% static 'companion/js/match.js' %}"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="{% static 'companion/js/chatbot.js' %}"></script>
+    <script src="{% static 'companion/js/app.js' %}"></script>
+
+</body>
+</html>
