@@ -20,7 +20,7 @@ load_dotenv(BASE_DIR / ".env")
 # --------------------------------------------------
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 if not SECRET_KEY:
     raise ImproperlyConfigured(
         "SECRET_KEY environment variable is missing."
